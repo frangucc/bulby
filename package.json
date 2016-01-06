@@ -4,6 +4,10 @@
   "email": "franchino@problemspaces.com",
   "url": "https://twitter.com/franchescino",
   "description": "A place to start tinkering when migrating to Redux-React.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
   "files": [
     "app",
     "router"
