@@ -1,23 +1,31 @@
-module.exports = {
-	entry: './main.js',
-	output: {
-		path: './',
-		filename: 'index.js'
-	},
-	devServer: {
-		inline: true,
-		port: 3333
-	},
-	module: {
-		loaders: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel',
-				query: {
-					presets: ['es2015', 'react']
-				}
-			}
-		]
-	}
+var webpack = require('webpack');
+
+function getEntrySources(sources) {
+    if (process.env.NODE_ENV !== 'production') {
+        sources.push('webpack-dev-server/client?http://localhost:8080');
+        sources.push('webpack/hot/only-dev-server');
+    }
+
+    return sources;
 }
+
+var ignore = new webpack.IgnorePlugin(/\.svg$/)
+
+module.exports = {
+    entry: {
+        main: getEntrySources([
+            './scripts/main.js'
+        ])
+    },
+    output: {
+        publicPath: 'http://localhost:8080/',
+        filename: '/js/[name].js'
+    },
+    module: {
+        loaders: [
+            { test: /\.js$/, loaders: ['react-hot', 'jsx', 'babel'], exclude: /node_modules/ },
+            { test: /\.scss$/, loaders: ['style', 'css', 'sass'] }
+        ]
+    },
+    plugins: [ignore]
+};
